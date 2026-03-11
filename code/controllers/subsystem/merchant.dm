@@ -266,6 +266,10 @@ SUBSYSTEM_DEF(merchant)
 	var/obj/item/temp = item_type
 	var/sellprice = initial(temp.sellprice)
 
+	// Workaround for brewing_bottle having a initial sellprice of 0
+	if(istype(temp, /obj/item/reagent_containers/glass/bottle/brewing_bottle))
+		sellprice = temp.sellprice
+
 	if(sellprice && sellprice > 0)
 		return sellprice
 

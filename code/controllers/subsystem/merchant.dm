@@ -264,7 +264,7 @@ SUBSYSTEM_DEF(merchant)
 
 	// Otherwise use sellprice directly
 	var/obj/item/temp = item_type
-	var/sellprice = initial(temp.sellprice)
+	var/sellprice = temp.sellprice
 
 	if(sellprice && sellprice > 0)
 		return sellprice

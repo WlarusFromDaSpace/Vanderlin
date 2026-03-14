@@ -903,13 +903,6 @@ GLOBAL_LIST_EMPTY(active_lifts_by_type)
 				continue
 
 			var/old_price = SSmerchant.active_faction.get_actual_sell_price(listed_atom.type, sell_modifer)
-
-			// Workaround for the type brewing_bottle having sellprice of 0
-			var/do_not_update_prices_for_this_item = FALSE
-			if(istype(listed_atom, /obj/item/reagent_containers/glass/bottle/brewing_bottle))
-				old_price = SSmerchant.active_faction.get_actual_sell_price(listed_atom, sell_modifer)
-				do_not_update_prices_for_this_item = TRUE
-
 			if(old_price <= 0)
 				continue
 
@@ -919,8 +912,7 @@ GLOBAL_LIST_EMPTY(active_lifts_by_type)
 			SSmerchant.handle_selling(listed_atom.type)
 
 			var/new_price = SSmerchant.active_faction.get_actual_sell_price(listed_atom.type, sell_modifer)
-			// Do not print updated prices when they don't matter (brewer's bottles)
-			if(old_price != new_price && !do_not_update_prices_for_this_item)
+			if(old_price != new_price)
 				SSmerchant.changed_sell_prices(listed_atom.type, old_price, new_price)
 
 			for(var/atom/movable/inside in listed_atom.get_all_contents())
@@ -936,13 +928,6 @@ GLOBAL_LIST_EMPTY(active_lifts_by_type)
 					continue
 
 				var/old_inside_price = SSmerchant.active_faction.get_actual_sell_price(inside.type, sell_modifer)
-
-				// Same workaround as in the outer loop
-				var/do_not_update_prices_for_this_inside_item = FALSE
-				if(istype(inside, /obj/item/reagent_containers/glass/bottle/brewing_bottle))
-					old_inside_price = SSmerchant.active_faction.get_actual_sell_price(inside, sell_modifer)
-					do_not_update_prices_for_this_inside_item = TRUE
-
 				if(old_inside_price <= 0)
 					continue
 
@@ -952,7 +937,7 @@ GLOBAL_LIST_EMPTY(active_lifts_by_type)
 				SSmerchant.handle_selling(inside.type)
 
 				var/new_inside_price = SSmerchant.active_faction.get_actual_sell_price(inside.type, sell_modifer)
-				if(old_inside_price != new_inside_price && !do_not_update_prices_for_this_inside_item)
+				if(old_inside_price != new_inside_price)
 					SSmerchant.changed_sell_prices(inside.type, old_inside_price, new_inside_price)
 				qdel(inside)
 

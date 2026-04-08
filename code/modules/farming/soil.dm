@@ -191,6 +191,9 @@
 		else if(container.reagents.has_reagent(/datum/reagent/water/gross, 30))
 			container.reagents.remove_reagent(/datum/reagent/water/gross, 30)
 			water_amount = 150
+		else if(container.reagents.has_reagent(/datum/reagent/water/gross/marshy, 30))
+			container.reagents.remove_reagent(/datum/reagent/water/gross/marshy, 30)
+			water_amount = 150
 		else
 			to_chat(user, span_warning("There's no water in \the [container]!"))
 			return TRUE
